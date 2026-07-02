@@ -314,7 +314,6 @@
 </div>
 
 <script>
-    // Master bank containing all unique 100 context words and phrases
     const masterQuizData = [
         {"id": 1, "type": "mcq", "question": "How do you say 'hello' in Spanish?", "options": ["Hola", "Adiós", "Gracias", "Por favor"], "answer": "Hola", "explanation": "Lesson 1: 'Hola' means hello."},
         {"id": 2, "type": "mcq", "question": "What is the Spanish pronoun for 'I'?", "options": ["Tú", "Él", "Yo", "Ella"], "answer": "Yo", "explanation": "Lesson 1: 'Yo' means I."},
@@ -369,7 +368,7 @@
         {"id": 51, "type": "mcq", "question": "What is the 'I' form of the verb salir?", "options": ["Salo", "Salgo", "Sales", "Sale"], "answer": "Salgo", "explanation": "Lesson 18: 'Salir' is irregular in the first person: 'yo salgo'."},
         {"id": 52, "type": "mcq", "question": "Translate: 'She leaves tonight.'", "options": ["Sale mañana.", "No salgo hoy.", "Sale esta noche.", "Sales ahora."], "answer": "Sale esta noche.", "explanation": "Lesson 18: 'Esta noche' means tonight; 'sale' is she leaves."},
         {"id": 53, "type": "mcq", "question": "Translate: 'Do you have a water?'", "options": ["¿Tengo un agua?", "¿Tienes un agua?", "¿Tiene una cerveza?", "¿Necesitas un agua?"], "answer": "¿Tienes un agua?", "explanation": "Lesson 18: 'Tienes' is the tú form of tener."},
-        {"id": 54, "type": "mcq", "question": "When expressing being busy or tired, which verb 'to be' is used?", "options": ["Ser", "Estar", "Hacer", "Tener"], "answer": "Estar", "explanation": "Lesson 18: Temporary states/conditions like busy (ocupado) or tired (cansado) use 'estar'."},
+        {"id": 54, "type": "word", "question": "When expressing being busy or tired, which verb 'to be' is used?", "options": ["Ser", "Estar", "Hacer", "Tener"], "answer": "Estar", "explanation": "Lesson 18: Temporary states/conditions like busy (ocupado) or tired (cansado) use 'estar'."},
         {"id": 55, "type": "mcq", "question": "Translate: 'Is he tired?'", "options": ["¿Está ocupado?", "¿Es cansado?", "¿Está cansado?", "¿Está muy ocupada?"], "answer": "¿Está cansado?", "explanation": "Lesson 18: '¿Está cansado?' uses estar for a physical state."},
         {"id": 56, "type": "mcq", "question": "How do you conjugate 'necesitar' for 'she/he'?", "options": ["Necesito", "Necesitas", "Necesita", "Necesitan"], "answer": "Necesita", "explanation": "Lesson 18: Third person singular drops the '-s' to become 'necesita'."},
         {"id": 57, "type": "mcq", "question": "What does 'ver' mean?", "options": ["To want", "To see", "To say", "To be"], "answer": "To see", "explanation": "Lesson 19: 'Ver' is the infinitive meaning to see."},
@@ -464,7 +463,7 @@
     function updateLiveScorecard() {
         document.getElementById('liveRightCount').innerText = liveCorrect;
         document.getElementById('liveWrongCount').innerText = liveIncorrect;
-        document.getElementById('liveRemainingCount').innerText = liveRemaining;
+        document.getElementById('liveRemainCount').innerText = liveRemaining;
         document.getElementById('xpCount').innerText = currentXP;
         document.getElementById('streakCount').innerText = currentStreak;
     }
@@ -594,14 +593,11 @@
     function triggerManualSubmit() {
         const confirmSubmission = confirm("Are you sure you want to finish the test early? All unattempted questions will be graded as incorrect.");
         if (confirmSubmission) {
-            // Treat unattempted questions as incorrect entries
             let unattemptedStartIndex = currentIdx;
             
-            // If user clicked submit while viewing a question but before hitting "Check Answer"
             if (gameState === "answering") {
                 unattemptedStartIndex = currentIdx;
             } else {
-                // If they are on an evaluation card review layout, skip current index
                 unattemptedStartIndex = currentIdx + 1;
             }
 
