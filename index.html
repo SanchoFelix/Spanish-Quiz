@@ -38,7 +38,8 @@
 
         .stats-group {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .stat-badge {
@@ -54,6 +55,9 @@
 
         .stat-badge.streak { color: #f59e0b; border: 1px solid #f59e0b; }
         .stat-badge.xp { color: #38bdf8; border: 1px solid #38bdf8; }
+        .stat-badge.live-right { color: var(--success); border: 1px solid var(--success); }
+        .stat-badge.live-wrong { color: var(--danger); border: 1px solid var(--danger); }
+        .stat-badge.live-remain { color: var(--text-muted); border: 1px solid var(--text-muted); }
 
         .progress-container {
             width: 100%;
@@ -131,10 +135,6 @@
             background-color: #312e81;
         }
 
-        .text-input-wrapper {
-            position: relative;
-        }
-
         .game-input {
             width: 100%;
             box-sizing: border-box;
@@ -155,7 +155,9 @@
         .footer-controls {
             margin-top: 2rem;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
         }
 
         .action-btn {
@@ -175,7 +177,23 @@
             opacity: 0.9;
         }
 
-        /* Feedback Screen Overlay style panels */
+        .submit-early-btn {
+            background-color: transparent;
+            color: var(--danger);
+            border: 2px solid var(--danger);
+            padding: 0.9rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-early-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            transform: translateY(-2px);
+        }
+
         .feedback-panel {
             margin-top: 1.5rem;
             padding: 1.5rem;
@@ -208,7 +226,6 @@
             gap: 0.5rem;
         }
 
-        /* Final Screen */
         .results-screen {
             text-align: center;
             display: none;
@@ -257,8 +274,11 @@
 <div class="game-header">
     <div style="font-weight: 800; font-size: 1.2rem; tracking: -0.05em;">SPANISH <span style="color: var(--primary)">L1</span></div>
     <div class="stats-group">
+        <div class="stat-badge live-right">✅ <span id="liveRightCount">0</span></div>
+        <div class="stat-badge live-wrong">❌ <span id="liveWrongCount">0</span></div>
+        <div class="stat-badge live-remain">⏳ <span id="liveRemainCount">0</span></div>
         <div class="stat-badge xp">⚡ <span id="xpCount">0</span> XP</div>
-        <div class="stat-badge streak">🔥 <span id="streakCount">0</span> Streak</div>
+        <div class="stat-badge streak">🔥 <span id="streakCount">0</span></div>
     </div>
 </div>
 
@@ -267,14 +287,11 @@
 </div>
 
 <div class="arena-container">
-    <!-- Active Quiz Card Frame -->
     <div class="game-card" id="quizCard">
         <div class="q-meta">Question <span id="currentNum">1</span> of <span id="totalNum">100</span></div>
         <div class="question-text" id="questionText">Loading challenge context...</div>
         
-        <div id="interactionZone">
-            <!-- Dynamic Inject point for MCQ grids or input fields -->
-        </div>
+        <div id="interactionZone"></div>
 
         <div class="feedback-panel" id="feedbackPanel">
             <div class="feedback-title" id="feedbackTitle">Status</div>
@@ -282,19 +299,17 @@
         </div>
 
         <div class="footer-controls">
+            <button class="submit-early-btn" id="submitEarlyBtn" onclick="triggerManualSubmit()">Submit Test</button>
             <button class="action-btn" id="actionBtn" onclick="handleAction()">Check Answer</button>
         </div>
     </div>
 
-    <!-- Final Score Dashboard Frame -->
     <div class="game-card results-screen" id="resultsCard">
         <div class="results-title" id="resultsTitle">Arena Completed!</div>
         <div class="results-score" id="resultsScoreDisplay">0%</div>
         <p id="resultsMessage" style="color: var(--text-muted); font-size: 1.1rem; padding: 0 1rem;"></p>
         
-        <div class="menu-buttons" id="menuActionZone">
-            <!-- Dynamic injection based on score requirement -->
-        </div>
+        <div class="menu-buttons" id="menuActionZone"></div>
     </div>
 </div>
 
@@ -360,7 +375,7 @@
         {"id": 57, "type": "mcq", "question": "What does 'ver' mean?", "options": ["To want", "To see", "To say", "To be"], "answer": "To see", "explanation": "Lesson 19: 'Ver' is the infinitive meaning to see."},
         {"id": 58, "type": "mcq", "question": "How do you say 'I see'?", "options": ["Veo", "Ves", "Ve", "Verlo"], "answer": "Veo", "explanation": "Lesson 19: 'Yo veo' is the first person singular of ver."},
         {"id": 59, "type": "mcq", "question": "Translate: 'Do you see that it's not possible?'", "options": ["¿Ves que es imposible?", "¿Veo que no es posible?", "¿Ves que no es posible?", "Rubia o morena?"], "answer": "¿Ves que no es posible?", "explanation": "Lesson 19: '¿Ves que...?' (Do you see that...?) + 'no es posible'."},
-        {"id": 60, "type": "mcq", "question": "How do you say 'I can'?", "options": ["Puedo", "Puedes", "Puede", "Saber"], "answer": "Puedo", "explanation": "Lesson 19: 'Puedo' is the first person singular of poder (to be able to)."},
+        {"id": 60, "type": "mcq", "question": "How do you say 'I can'?", "options": ["Puedo", "Puedes", "Maybe", "Saber"], "answer": "Puedo", "explanation": "Lesson 19: 'Puedo' is the first person singular of poder (to be able to)."},
         {"id": 61, "type": "mcq", "question": "Translate: 'He sees that I can't do it.'", "options": ["Veo que no puedo hacerlo.", "Ve que no puedo hacerlo.", "Ve que puede salir.", "Quiere saber."], "answer": "Ve que no puedo hacerlo.", "explanation": "Lesson 19: 'Ve' (He sees) + 'que no puedo hacerlo' (that I cannot do it)."},
         {"id": 62, "type": "mcq", "question": "Translate: 'She can leave when she wants.'", "options": ["Puede salir cuando quiere.", "Quiero cenar ahora.", "No puedo hacerlo ahora.", "Sale esta noche."], "answer": "Puede salir cuando quiere.", "explanation": "Lesson 19: 'Puede salir' (She can leave) + 'cuando quiere' (when she wants)."},
         {"id": 63, "type": "mcq", "question": "When expressing personal identity or names, which verb 'to be' is used?", "options": ["Estar", "Ser", "Tener", "Hacer"], "answer": "Ser", "explanation": "Lesson 19: Essential identity (names, origin) uses 'ser' (soy/eres/es)."},
@@ -408,10 +423,14 @@
     let selectedAnswer = "";
     let wrongAnswersCollected = [];
     
-    // Gamification state tracking vectors
+    // Live Grading Scorecard Stats
+    let liveCorrect = 0;
+    let liveIncorrect = 0;
+    let liveRemaining = 0;
+
     let currentXP = 0;
     let currentStreak = 0;
-    let gameState = "answering"; // answering | evaluation
+    let gameState = "answering"; 
 
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
@@ -430,13 +449,24 @@
         currentXP = 0;
         currentStreak = 0;
         
-        document.getElementById('xpCount').innerText = currentXP;
-        document.getElementById('streakCount').innerText = currentStreak;
+        liveCorrect = 0;
+        liveIncorrect = 0;
+        liveRemaining = quizDeck.length;
+        
+        updateLiveScorecard();
         
         document.getElementById('resultsCard').style.display = "none";
         document.getElementById('quizCard').style.display = "block";
         
         showQuestion();
+    }
+
+    function updateLiveScorecard() {
+        document.getElementById('liveRightCount').innerText = liveCorrect;
+        document.getElementById('liveWrongCount').innerText = liveIncorrect;
+        document.getElementById('liveRemainingCount').innerText = liveRemaining;
+        document.getElementById('xpCount').innerText = currentXP;
+        document.getElementById('streakCount').innerText = currentStreak;
     }
 
     function showQuestion() {
@@ -445,7 +475,6 @@
         
         const q = quizDeck[currentIdx];
         
-        // Update UI Progress Metrics
         document.getElementById('currentNum').innerText = currentIdx + 1;
         document.getElementById('totalNum').innerText = quizDeck.length;
         const progressPercent = (currentIdx / quizDeck.length) * 100;
@@ -518,6 +547,7 @@
         }
 
         gameState = "evaluation";
+        liveRemaining--;
         const isCorrect = userInputValue.toLowerCase() === q.answer.toLowerCase();
         
         const panel = document.getElementById('feedbackPanel');
@@ -527,19 +557,16 @@
         panel.style.display = "block";
 
         if (isCorrect) {
+            liveCorrect++;
             currentXP += 10;
             currentStreak += 1;
-            document.getElementById('xpCount').innerText = currentXP;
-            document.getElementById('streakCount').innerText = currentStreak;
 
             panel.className = "feedback-panel correct";
             title.innerHTML = "🎉 Correct Answer!";
             text.innerHTML = `<strong>${q.answer}</strong> — ${q.explanation}`;
         } else {
-            currentStreak = 0; // Break combo counter metrics safely
-            document.getElementById('streakCount').innerText = currentStreak;
-            
-            // Log reference inside correction vector array tracking loop
+            liveIncorrect++;
+            currentStreak = 0; 
             wrongAnswersCollected.push(q);
 
             panel.className = "feedback-panel incorrect";
@@ -551,6 +578,7 @@
             `;
         }
 
+        updateLiveScorecard();
         document.getElementById('actionBtn').innerText = "Continue →";
     }
 
@@ -559,6 +587,30 @@
         if (currentIdx < quizDeck.length) {
             showQuestion();
         } else {
+            renderEndgameDashboard();
+        }
+    }
+
+    function triggerManualSubmit() {
+        const confirmSubmission = confirm("Are you sure you want to finish the test early? All unattempted questions will be graded as incorrect.");
+        if (confirmSubmission) {
+            // Treat unattempted questions as incorrect entries
+            let unattemptedStartIndex = currentIdx;
+            
+            // If user clicked submit while viewing a question but before hitting "Check Answer"
+            if (gameState === "answering") {
+                unattemptedStartIndex = currentIdx;
+            } else {
+                // If they are on an evaluation card review layout, skip current index
+                unattemptedStartIndex = currentIdx + 1;
+            }
+
+            for (let i = unattemptedStartIndex; i < quizDeck.length; i++) {
+                wrongAnswersCollected.push(quizDeck[i]);
+                liveIncorrect++;
+                liveRemaining--;
+            }
+
             renderEndgameDashboard();
         }
     }
@@ -576,11 +628,10 @@
         actionZone.innerHTML = "";
 
         const totalPoints = quizDeck.length;
-        const correctCount = totalPoints - wrongAnswersCollected.length;
-        const finalPercent = (correctCount / totalPoints) * 100;
+        const finalPercent = (liveCorrect / totalPoints) * 100;
 
         scoreDisplay.innerText = `${finalPercent.toFixed(0)}%`;
-        msg.innerText = `You correctly decoded ${correctCount} out of ${totalPoints} structural expressions.`;
+        msg.innerText = `You correctly decoded ${liveCorrect} out of ${totalPoints} structural expressions.`;
 
         if (wrongAnswersCollected.length === 0) {
             document.getElementById('resultsTitle').innerText = "Perfect Score Achieved!";
@@ -588,28 +639,31 @@
             actionZone.innerHTML = `<button class="menu-btn primary" onclick="startFullQuiz()">Restart Fresh Arena</button>`;
         } else {
             document.getElementById('resultsTitle').innerText = "Keep Training!";
-            msg.innerHTML += "<br><strong style='color: var(--danger)'>Passing score requires exactly 100%.</strong> Check out your paths below:";
+            msg.innerHTML += "<br><strong style='color: var(--danger)'>Passing score requires exactly 100%.</strong> Unattempted and failed cards have been bundled into review:";
             
             actionZone.innerHTML = `
-                <button class="menu-btn primary" onclick="startTargetedReview()">Work on Incorrect Answers (${wrongAnswersCollected.length})</button>
+                <button class="menu-btn primary" onclick="startTargetedReview()">Work on Incorrect/Unattempted Answers (${wrongAnswersCollected.length})</button>
                 <button class="menu-btn secondary" onclick="startFullQuiz()">Retake Full Quiz</button>
             `;
         }
     }
 
     function startTargetedReview() {
-        // Safe deep isolated copy swap of incorrect vectors directly into engine pipeline
         quizDeck = shuffle([...wrongAnswersCollected]);
         currentIdx = 0;
         wrongAnswersCollected = [];
         
+        liveCorrect = 0;
+        liveIncorrect = 0;
+        liveRemaining = quizDeck.length;
+        updateLiveScorecard();
+
         document.getElementById('resultsCard').style.display = "none";
         document.getElementById('quizCard').style.display = "block";
         
         showQuestion();
     }
 
-    // Launch viewport configuration runtime execution
     window.onload = startFullQuiz;
 </script>
 
