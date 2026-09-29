@@ -1,0 +1,362 @@
+[
+    {
+        "id": 1,
+        "type": "mcq",
+        "question": "How do you say 'please' in Spanish?",
+        "options": [
+            "A) Gracias",
+            "B) Por favor",
+            "C) De nada",
+            "D) Lo siento"
+        ],
+        "answer": "B) Por favor"
+    },
+    {
+        "id": 2,
+        "type": "mcq",
+        "question": "What is the correct Spanish translation for 'I want a coffee'?",
+        "options": [
+            "A) Quiero un café",
+            "B) Tengo un café",
+            "C) Necesito una Coca-Cola",
+            "D) Soy un café"
+        ],
+        "answer": "A) Quiero un café"
+    },
+    {
+        "id": 3,
+        "type": "mcq",
+        "question": "How do you say 'It's for you' in Spanish?",
+        "options": [
+            "A) Es para mí",
+            "B) Está para mí",
+            "C) Es para ti",
+            "D) No es para ti"
+        ],
+        "answer": "C) Es para ti"
+    },
+    {
+        "id": 4,
+        "type": "mcq",
+        "question": "What is the Spanish word for 'impossible'?",
+        "options": [
+            "A) Importante",
+            "B) Difícil",
+            "C) Posible",
+            "D) Imposible"
+        ],
+        "answer": "D) Imposible"
+    },
+    {
+        "id": 5,
+        "type": "mcq",
+        "question": "How do you translate 'It is very good'?",
+        "options": [
+            "A) Es muy malo",
+            "B) Es muy bueno",
+            "C) Es muy grande",
+            "D) Está muy ocupado"
+        ],
+        "answer": "B) Es muy bueno"
+    },
+    {
+        "id": 6,
+        "type": "mcq",
+        "question": "How do you say 'Excuse me' when trying to get someone's attention?",
+        "options": [
+            "A) Lo siento",
+            "B) Gracias",
+            "C) Perdone",
+            "D) Hasta luego"
+        ],
+        "answer": "C) Perdone"
+    },
+    {
+        "id": 7,
+        "type": "mcq",
+        "question": "Translate into Spanish: 'I don't have a car.'",
+        "options": [
+            "A) No quiero un coche",
+            "B) No tengo un coche",
+            "C) No necesito un coche",
+            "D) No puedo ver el coche"
+        ],
+        "answer": "B) No tengo un coche"
+    },
+    {
+        "id": 8,
+        "type": "mcq",
+        "question": "What does the expression 'Lo siento' mean?",
+        "options": [
+            "A) You're welcome",
+            "B) I'm sorry",
+            "C) Thank you very much",
+            "D) Good afternoon"
+        ],
+        "answer": "B) I'm sorry"
+    },
+    {
+        "id": 9,
+        "type": "mcq",
+        "question": "How do you say 'like that' or 'that way' in Spanish?",
+        "options": [
+            "A) Así",
+            "B) Allí",
+            "C) Aquí",
+            "D) Ahora"
+        ],
+        "answer": "A) Así"
+    },
+    {
+        "id": 10,
+        "type": "mcq",
+        "question": "How do you ask someone informally 'How are you?'",
+        "options": [
+            "A) ¿Qué tienes?",
+            "B) ¿Dónde estás?",
+            "C) ¿Cómo está?",
+            "D) ¿Cómo estás?"
+        ],
+        "answer": "D) ¿Cómo estás?"
+    },
+    {
+        "id": 11,
+        "type": "mcq",
+        "question": "Translate: 'Why do you want it?'",
+        "options": [
+            "A) ¿Por qué lo quieres?",
+            "B) ¿Por qué lo tienes?",
+            "C) Porque lo quiero",
+            "D) ¿Cuándo lo quieres?"
+        ],
+        "answer": "A) ¿Por qué lo quieres?"
+    },
+    {
+        "id": 12,
+        "type": "mcq",
+        "question": "How do you translate 'to do it' in Spanish?",
+        "options": [
+            "A) Saberlo",
+            "B) Hacerlo",
+            "C) Tenerlo",
+            "D) Verlo"
+        ],
+        "answer": "B) Hacerlo"
+    },
+    {
+        "id": 13,
+        "type": "mcq",
+        "question": "How do you say 'I can' in Spanish?",
+        "options": [
+            "A) Puedes",
+            "B) Sé",
+            "C) Puedo",
+            "D) Tengo"
+        ],
+        "answer": "C) Puedo"
+    },
+    {
+        "id": 14,
+        "type": "mcq",
+        "question": "What is the Spanish word for 'easy'?",
+        "options": [
+            "A) Difícil",
+            "B) Fácil",
+            "C) Bueno",
+            "D) Pequeño"
+        ],
+        "answer": "B) Fácil"
+    },
+    {
+        "id": 15,
+        "type": "mcq",
+        "question": "Translate: 'The big one is easy, but the small one is difficult.'",
+        "options": [
+            "A) El grande es difícil pero el pequeño es fácil.",
+            "B) El pequeño es fácil pero el grande es difícil.",
+            "C) El grande es fácil pero el pequeño es difícil.",
+            "D) La grande es buena pero la pequeña es mala."
+        ],
+        "answer": "C) El grande es fácil pero el pequeño es difícil."
+    },
+    {
+        "id": 16,
+        "type": "mcq",
+        "question": "How do you say 'Where is my phone?' in Spanish?",
+        "options": [
+            "A) ¿Dónde está mi teléfono?",
+            "B) ¿Qué es mi teléfono?",
+            "C) ¿Dónde está tu teléfono?",
+            "D) ¿Cuándo está mi teléfono?"
+        ],
+        "answer": "A) ¿Dónde está mi teléfono?"
+    },
+    {
+        "id": 17,
+        "type": "mcq",
+        "question": "What is the Spanish translation for 'I know'?",
+        "options": [
+            "A) Sabes",
+            "B) Sé",
+            "C) Veo",
+            "D) Sabe"
+        ],
+        "answer": "B) Sé"
+    },
+    {
+        "id": 18,
+        "type": "mcq",
+        "question": "What is the Spanish word for 'there'?",
+        "options": [
+            "A) Aquí",
+            "B) Así",
+            "C) Allí",
+            "D) Hoy"
+        ],
+        "answer": "C) Allí"
+    },
+    {
+        "id": 19,
+        "type": "mcq",
+        "question": "If a female speaker wants to say 'I am tired today', which is correct?",
+        "options": [
+            "A) Estoy cansado hoy.",
+            "B) Estoy ocupado hoy.",
+            "C) Estoy cansada hoy.",
+            "D) Soy cansada hoy."
+        ],
+        "answer": "C) Estoy cansada hoy."
+    },
+    {
+        "id": 20,
+        "type": "mcq",
+        "question": "How do you say 'What is this?' in Spanish?",
+        "options": [
+            "A) ¿Qué es eso?",
+            "B) ¿Qué es esto?",
+            "C) ¿Cómo es esto?",
+            "D) ¿Quién es esto?"
+        ],
+        "answer": "B) ¿Qué es esto?"
+    },
+    {
+        "id": 21,
+        "type": "mcq",
+        "question": "How do you say 'I have to leave' in Spanish?",
+        "options": [
+            "A) Tengo que salir.",
+            "B) Quiero salir.",
+            "C) Puedo salir.",
+            "D) Tengo que cenar."
+        ],
+        "answer": "A) Tengo que salir."
+    },
+    {
+        "id": 22,
+        "type": "mcq",
+        "question": "What does 'cenar' mean?",
+        "options": [
+            "A) To leave",
+            "B) To eat / have lunch",
+            "C) To have dinner",
+            "D) To have breakfast"
+        ],
+        "answer": "C) To have dinner"
+    },
+    {
+        "id": 23,
+        "type": "mcq",
+        "question": "Translate: 'Are you sure?' (addressing a male)",
+        "options": [
+            "A) ¿Estás ocupado?",
+            "B) ¿Estás seguro?",
+            "C) ¿Eres seguro?",
+            "D) ¿Estás cansado?"
+        ],
+        "answer": "B) ¿Estás seguro?"
+    },
+    {
+        "id": 24,
+        "type": "mcq",
+        "question": "What is the Spanish word for 'chair'?",
+        "options": [
+            "A) Mesa",
+            "B) Coche",
+            "C) Silla",
+            "D) Casa"
+        ],
+        "answer": "C) Silla"
+    },
+    {
+        "id": 25,
+        "type": "mcq",
+        "question": "How do you say 'I do' or 'I am doing' in Spanish?",
+        "options": [
+            "A) Hago",
+            "B) Haces",
+            "C) Hace",
+            "D) Salgo"
+        ],
+        "answer": "A) Hago"
+    },
+    {
+        "id": 26,
+        "type": "mcq",
+        "question": "Translate: 'She leaves tonight.'",
+        "options": [
+            "A) Salgo esta noche.",
+            "B) Sale mañana.",
+            "C) Ella sale esta noche.",
+            "D) Ella sales esta noche."
+        ],
+        "answer": "C) Ella sale esta noche."
+    },
+    {
+        "id": 27,
+        "type": "mcq",
+        "question": "How do you say 'I see' in Spanish?",
+        "options": [
+            "A) Ves",
+            "B) Ve",
+            "C) Sé",
+            "D) Veo"
+        ],
+        "answer": "D) Veo"
+    },
+    {
+        "id": 28,
+        "type": "mcq",
+        "question": "How do you ask someone 'Are you Jessica?' in Spanish?",
+        "options": [
+            "A) ¿Estás Jessica?",
+            "B) ¿Eres Jessica?",
+            "C) ¿Es Jessica?",
+            "D) ¿Soy Jessica?"
+        ],
+        "answer": "B) ¿Eres Jessica?"
+    },
+    {
+        "id": 29,
+        "type": "mcq",
+        "question": "What is the Spanish nationality word for 'British'?",
+        "options": [
+            "A) Español / española",
+            "B) Americano / americana",
+            "C) Británico / británica",
+            "D) Inglés / inglesa"
+        ],
+        "answer": "C) Británico / británica"
+    },
+    {
+        "id": 30,
+        "type": "mcq",
+        "question": "Translate: 'Can you tell me?'",
+        "options": [
+            "A) ¿Puedo decirte?",
+            "B) ¿Quieres decirme?",
+            "C) ¿Puedes verme?",
+            "D) ¿Puedes decirme?"
+        ],
+        "answer": "D) ¿Puedes decirme?"
+    }
+]
