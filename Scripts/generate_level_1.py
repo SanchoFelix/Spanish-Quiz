@@ -3,11 +3,11 @@ import json
 from pypdf import PdfReader
 from google import genai
 from google.genai import types
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 LEVEL_DIR = "Coursework/Level 1"
 OUTPUT_FILE = "Data/level-1-quiz.json"
 
-# Initialize Gemini Client (automatically reads GEMINI_API_KEY environment variable)
 client = genai.Client()
 
 def extract_text_from_pdfs():
@@ -30,6 +30,22 @@ def extract_text_from_pdfs():
 
     return combined_text
 
+# Retry up to 5 times with exponential backoff if Gemini returns a 503 or transient error
+@retry(
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=2, min=4, max=30),
+    reraise=True
+)
+def call_gemini_api(prompt):
+    return client.models.generate_content(
+        model="gemini-3.8-flash",
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+            temperature=0.3,
+        ),
+    )
+
 def generate_quiz_json(transcript_text):
     prompt = f"""
     You are a Spanish language instructor. Analyze the following Level 1 Spanish lesson transcripts and generate a 30-question multiple-choice quiz testing vocabulary, grammar, and translations covered in these transcripts.
@@ -51,15 +67,8 @@ def generate_quiz_json(transcript_text):
     {transcript_text[:20000]}
     """
 
-    response = client.models.generate_content(
-        model="gemini-3.8-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            temperature=0.3,
-        ),
-    )
-
+    print("Sending request to Gemini (with retry protection)...")
+    response = call_gemini_api(prompt)
     content = response.text.strip()
     return json.loads(content)
 
