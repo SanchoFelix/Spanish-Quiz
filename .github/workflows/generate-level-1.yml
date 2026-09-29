@@ -26,7 +26,7 @@ jobs:
       - name: Run Level 1 Generator
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/generate_level_1.py
+        run: python Scripts/generate_level_1.py
 
       - name: Commit and Push generated JSON
         run: |
