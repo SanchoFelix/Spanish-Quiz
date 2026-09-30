@@ -1,1 +1,299 @@
-Spanish Level 1 Quiz
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanish Level 1 Quiz</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .game-header {
+            background-color: var(--surface);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+        }
+
+        .stats-group { display: flex; gap: 1rem; }
+
+        .stat-badge {
+            background: #334155;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-container { width: 100%; background-color: #334155; height: 8px; }
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #4f46e5, #38bdf8); transition: width 0.4s; }
+
+        .arena-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+
+        .game-card {
+            background-color: var(--surface);
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 600px;
+            padding: 2.5rem;
+            border: 1px solid #334155;
+        }
+
+        .question-text { font-size: 1.4rem; font-weight: 700; margin-bottom: 2rem; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+        .option-btn {
+            background-color: #334155;
+            color: var(--text);
+            border: 2px solid transparent;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover { background-color: #475569; }
+        .option-btn.selected { border-color: var(--primary); background-color: #312e81; }
+
+        .game-input {
+            width: 100%; box-sizing: border-box; background-color: #334155;
+            border: 2px solid #475569; color: var(--text); padding: 1.2rem;
+            border-radius: 1rem; font-size: 1.2rem; outline: none;
+        }
+
+        .footer-controls { margin-top: 2rem; display: flex; justify-content: flex-end; }
+
+        .action-btn {
+            background-color: var(--primary); color: white; border: none;
+            padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600;
+            border-radius: 1rem; cursor: pointer; transition: transform 0.2s;
+        }
+
+        .action-btn:hover { transform: translateY(-2px); }
+
+        .feedback-panel {
+            margin-top: 1.5rem; padding: 1.5rem; border-radius: 1rem; display: none;
+        }
+        .feedback-panel.correct { background-color: #064e3b; border: 1px solid var(--success); }
+        .feedback-panel.incorrect { background-color: #7f1d1d; border: 1px solid var(--danger); }
+
+        .results-screen { text-align: center; display: none; }
+        .results-score {
+            font-size: 4rem; font-weight: 800; margin: 1.5rem 0;
+            background: linear-gradient(45deg, #38bdf8, #4f46e5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .retry-btn {
+            background-color: var(--success); color: white; border: none;
+            padding: 1rem 2rem; font-size: 1.1rem; font-weight: 600;
+            border-radius: 1rem; cursor: pointer; margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-header">
+    <div style="font-weight: 800; font-size: 1.2rem;">SPANISH <span style="color: var(--primary)">LEVEL 1</span></div>
+    <div class="stats-group">
+        <div class="stat-badge">✅ <span id="rightCount">0</span></div>
+        <div class="stat-badge">❌ <span id="wrongCount">0</span></div>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="arena-container">
+    <div class="game-card" id="quizCard">
+        <div style="color: var(--text-muted); margin-bottom: 0.5rem;">Question <span id="currentNum">1</span> of <span id="totalNum">0</span></div>
+        <div class="question-text" id="questionText">Loading quiz questions...</div>
+        <div id="interactionZone"></div>
+
+        <div class="feedback-panel" id="feedbackPanel">
+            <div id="feedbackTitle" style="font-weight: bold; font-size: 1.2rem;"></div>
+            <div id="feedbackText" style="margin-top: 0.5rem;"></div>
+        </div>
+
+        <div class="footer-controls">
+            <button class="action-btn" id="actionBtn" onclick="handleAction()">Check Answer</button>
+        </div>
+    </div>
+
+    <div class="game-card results-screen" id="resultsCard">
+        <h2>Quiz Completed!</h2>
+        <div class="results-score" id="resultsScoreDisplay">0%</div>
+        <p id="resultsMessage" style="color: var(--text-muted); font-size: 1.1rem;"></p>
+        <button class="retry-btn" onclick="resetArena()">Try Again</button>
+    </div>
+</div>
+
+<script>
+    let quizData = [];
+    let currentIndex = 0;
+    let rightCount = 0;
+    let wrongCount = 0;
+    let selectedAnswer = null;
+    let isChecked = false;
+
+    async function loadQuizData() {
+        try {
+            const res = await fetch('./Data/level-1-quiz.json');
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            quizData = await res.json();
+            initQuiz();
+        } catch (e) {
+            console.error("Error loading JSON:", e);
+            document.getElementById("questionText").textContent = 
+                "Error loading Data/level-1-quiz.json. Please ensure the file exists in your repository.";
+        }
+    }
+
+    function initQuiz() {
+        if (!quizData || quizData.length === 0) return;
+        currentIndex = 0;
+        rightCount = 0;
+        wrongCount = 0;
+        document.getElementById("rightCount").textContent = "0";
+        document.getElementById("wrongCount").textContent = "0";
+        document.getElementById("totalNum").textContent = quizData.length;
+        document.getElementById("quizCard").style.display = "block";
+        document.getElementById("resultsCard").style.display = "none";
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        isChecked = false;
+        selectedAnswer = null;
+        const q = quizData[currentIndex];
+
+        document.getElementById("currentNum").textContent = currentIndex + 1;
+        document.getElementById("questionText").textContent = q.question;
+        document.getElementById("feedbackPanel").style.display = "none";
+        document.getElementById("actionBtn").textContent = "Check Answer";
+        
+        const pct = (currentIndex / quizData.length) * 100;
+        document.getElementById("progressBar").style.width = pct + "%";
+
+        const zone = document.getElementById("interactionZone");
+        zone.innerHTML = "";
+
+        if (q.type === "mcq" || (q.options && q.options.length > 0)) {
+            const grid = document.createElement("div");
+            grid.className = "options-grid";
+            q.options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    if (isChecked) return;
+                    document.querySelectorAll(".option-btn").forEach(b => b.classList.remove("selected"));
+                    btn.classList.add("selected");
+                    selectedAnswer = opt;
+                };
+                grid.appendChild(btn);
+            });
+            zone.appendChild(grid);
+        } else {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "game-input";
+            input.placeholder = "Type in Spanish...";
+            input.id = "textInput";
+            zone.appendChild(input);
+        }
+    }
+
+    function handleAction() {
+        if (!isChecked) {
+            checkAnswer();
+        } else {
+            currentIndex++;
+            if (currentIndex < quizData.length) {
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+    }
+
+    function checkAnswer() {
+        const q = quizData[currentIndex];
+        let userAnswer = selectedAnswer;
+
+        if (q.type === "fill" || !q.options || q.options.length === 0) {
+            const input = document.getElementById("textInput");
+            if (input) userAnswer = input.value.trim();
+        }
+
+        if (!userAnswer) return;
+
+        isChecked = true;
+        const panel = document.getElementById("feedbackPanel");
+        const title = document.getElementById("feedbackTitle");
+        const text = document.getElementById("feedbackText");
+
+        const normalize = str => String(str).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+        if (normalize(userAnswer) === normalize(q.answer)) {
+            rightCount++;
+            panel.className = "feedback-panel correct";
+            title.textContent = "✅ Correct!";
+            text.textContent = q.explanation || "Great job!";
+        } else {
+            wrongCount++;
+            panel.className = "feedback-panel incorrect";
+            title.textContent = "❌ Incorrect";
+            text.textContent = `Correct Answer: "${q.answer}". ${q.explanation || ''}`;
+        }
+
+        panel.style.display = "block";
+        document.getElementById("rightCount").textContent = rightCount;
+        document.getElementById("wrongCount").textContent = wrongCount;
+        document.getElementById("actionBtn").textContent = "Next Question →";
+    }
+
+    function showResults() {
+        document.getElementById("quizCard").style.display = "none";
+        document.getElementById("resultsCard").style.display = "block";
+
+        const total = rightCount + wrongCount;
+        const pct = total > 0 ? Math.round((rightCount / total) * 100) : 0;
+
+        document.getElementById("resultsScoreDisplay").textContent = pct + "%";
+        document.getElementById("resultsMessage").textContent = 
+            `You completed ${total} questions! You answered ${rightCount} correctly.`;
+        document.getElementById("progressBar").style.width = "100%";
+    }
+
+    function resetArena() {
+        initQuiz();
+    }
+
+    loadQuizData();
+</script>
+</body>
+</html>
