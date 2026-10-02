@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spanish Level 1 & 2 Assessment</title>
+    <title>Spanish Level 1 & 2 Advanced Challenge Quiz</title>
     <style>
         :root {
             --primary: #4A90E2;
@@ -138,45 +138,54 @@
             line-height: 1.4;
         }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .option-btn {
-            background: #FAFAFA;
-            border: 2px solid #EAEAEA;
-            padding: 14px 18px;
-            border-radius: 8px;
-            font-size: 1rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-            color: var(--text);
+        .input-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
-        .option-btn:hover:not([disabled]) {
+        .user-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #EAEAEA;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .user-input:focus {
             border-color: var(--primary);
-            background-color: #F4F8FC;
-            transform: translateY(-2px);
         }
 
-        .option-btn.correct {
+        .user-input.correct {
             background-color: #E8F8F0;
             border-color: var(--success);
             color: #1E7E34;
             font-weight: 600;
         }
 
-        .option-btn.incorrect {
+        .user-input.incorrect {
             background-color: #FCEAE9;
             border-color: var(--error);
             color: #A94442;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
         }
 
         .explanation {
@@ -185,7 +194,7 @@
             border-radius: 8px;
             background-color: #F8F9FA;
             border-left: 4px solid var(--primary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             display: none;
         }
 
@@ -266,8 +275,8 @@
     <canvas id="confetti"></canvas>
     
     <header>
-        <h1>Curso de Español</h1>
-        <p class="subtitle">Level 1 & Level 2 Comprehensive Assessment</p>
+        <h1>Curso de Español: Advanced Practice</h1>
+        <p class="subtitle">Fill-in-the-Blank & Sentence Completion Assessment</p>
     </header>
 
     <div class="controls-panel">
@@ -312,7 +321,12 @@
         <div class="question-card">
             <span class="question-tag" id="lesson-tag">Level 1 - Lesson 11</span>
             <div class="question-text" id="question-text">Loading question...</div>
-            <div class="options-grid" id="options-container"></div>
+            
+            <div class="input-container">
+                <input type="text" id="user-answer" class="user-input" placeholder="Type your Spanish answer here..." autocomplete="off">
+                <button id="submit-btn" class="submit-btn" onclick="checkAnswer()">Submit Answer</button>
+            </div>
+
             <div class="explanation" id="explanation"></div>
         </div>
 
@@ -331,90 +345,84 @@
 </div>
 
 <script>
-// COMPLETE QUESTION BANK FOR LEVEL 1 (11-20) AND LEVEL 2 (12-20)
+// ADVANCED FILL-IN-THE-BLANK / COMPLETE THE SENTENCE QUESTION BANK
+// Array of valid answers accepts common variations and regional terms (e.g., ordenador / computadora)
 const rawQuestions = [
     // LEVEL 1 - LESSON 11
-    { level: 1, lesson: 11, q: "How do you say 'the big one'?", options: ["el / la grande", "el / la pequeño", "el / la grande uno", "un grande"], answer: 0, exp: "'El / la grande' means the big one." },
-    { level: 1, lesson: 11, q: "Translate: 'Do you know why I don't have it?'", options: ["¿Sabes por qué no lo tengo?", "¿Sabes por qué lo tengo?", "¿Quieres saber por qué lo tengo?", "¿Sabes dónde está?"], answer: 0, exp: "'¿Sabes por qué no lo tengo?' is the correct translation." },
-    { level: 1, lesson: 11, q: "How do you say 'I know that I can do it'?", options: ["Sé que puedo hacerlo.", "Sé que quiero hacerlo.", "Puedo hacerlo aquí.", "No sé si puedo hacerlo."], answer: 0, exp: "'Sé que puedo hacerlo' = I know that I can do it." },
+    { level: 1, lesson: 11, q: "Fill in the blank: Fill in the missing Spanish word for 'the big one' (masculine):\n'¿Quieres el pequeño o _____ grande?'", answers: ["el"], exp: "Use 'el' for 'the big one' (masculine) -> el grande." },
+    { level: 1, lesson: 11, q: "Complete the sentence (Translate 'why I don't have it'):\n¿Sabes _____ _____ _____ _____?", answers: ["por que no lo tengo", "porque no lo tengo"], exp: "'Por qué no lo tengo' = why I don't have it." },
+    { level: 1, lesson: 11, q: "Fill in the blank (Translate 'I know that I can do it'):\n'_____ que puedo hacerlo.'", answers: ["se", "sé"], exp: "'Sé' is 1st person singular of saber." },
 
     // LEVEL 1 - LESSON 12
-    { level: 1, lesson: 12, q: "Translate: 'Where are you?'", options: ["¿Dónde estás?", "¿Dónde eres?", "¿Dónde está?", "¿Cómo estás?"], answer: 0, exp: "'¿Dónde estás?' asks for temporary location/state." },
-    { level: 1, lesson: 12, q: "How do you say 'here' and 'there'?", options: ["aquí / allí", "allí / aquí", "este / ese", "esto / eso"], answer: 0, exp: "'Aquí' = here; 'Allí' = there." },
-    { level: 1, lesson: 12, q: "Translate: 'The hotel is very small.'", options: ["El hotel es muy pequeño.", "La casa es muy grande.", "El hotel está cerca.", "El hotel es grande."], answer: 0, exp: "'El hotel es muy pequeño' translates the statement directly." },
+    { level: 1, lesson: 12, q: "Complete the sentence (Translate 'Where are you?'):\n¿Dónde _____?", answers: ["estas", "estás"], exp: "'Estás' is used for asking location of 'tú'." },
+    { level: 1, lesson: 12, q: "Fill in the blank (Translate 'here' and 'there'):\n'Está _____ (here), no está _____ (there).'", answers: ["aqui alli", "aquí allí", "aqui, alli", "aquí, allí"], exp: "'Aquí' means here, 'allí' means there." },
 
     // LEVEL 1 - LESSON 13
-    { level: 1, lesson: 13, q: "How do you say 'I am busy' (female speaker)?", options: ["Estoy ocupado", "Estoy ocupada", "Soy ocupada", "Estoy cansada"], answer: 1, exp: "Feminine adjectives end in -a: 'Estoy ocupada'." },
-    { level: 1, lesson: 13, q: "Translate: 'I am tired today' (female speaker).", options: ["Estoy cansada hoy.", "Estoy cansado hoy.", "Soy cansada hoy.", "Tengo cansada hoy."], answer: 0, exp: "'Cansada' reflects a female speaker." },
-    { level: 1, lesson: 13, q: "Translate: 'I'm sorry but I'm very busy now' (male speaker).", options: ["Lo siento pero estoy muy ocupado ahora.", "Lo siento pero soy muy ocupado.", "Perdón pero estoy cansado.", "Lo siento pero no puedo."], answer: 0, exp: "'Lo siento pero estoy muy ocupado ahora' is correct." },
+    { level: 1, lesson: 13, q: "Complete the sentence (Translate 'I am busy' - female speaker):\n'Estoy _____.'", answers: ["ocupada"], exp: "Female speaker uses feminine adjective ending (-a): ocupada." },
+    { level: 1, lesson: 13, q: "Fill in the blank (Translate 'tired today' - female speaker):\n'Estoy _____ hoy.'", answers: ["cansada"], exp: "Feminine form of tired is 'cansada'." },
 
     // LEVEL 1 - LESSON 14
-    { level: 1, lesson: 14, q: "Translate neutral 'this' and 'that':", options: ["esto / eso", "este / ese", "esta / esa", "el / la"], answer: 0, exp: "'Esto' (this) and 'eso' (that) are neutral demonstrative pronouns." },
-    { level: 1, lesson: 14, q: "How do you say 'I have to leave'?", options: ["Tengo que salir.", "Quiero salir.", "Puedo salir.", "Tengo salir."], answer: 0, exp: "'Tengo que' + infinitive = I have to..." },
-    { level: 1, lesson: 14, q: "Translate: 'Do you want to leave tonight or tomorrow?'", options: ["¿Quieres salir esta noche o mañana?", "¿Tienes que salir hoy o mañana?", "¿Quieres salir hoy o esta noche?", "¿Puedes salir mañana?"], answer: 0, exp: "'Esta noche' = tonight, 'mañana' = tomorrow." },
+    { level: 1, lesson: 14, q: "Fill in the blank (Translate neutral 'this' and 'that'):\n'¿Qué es _____ (this)? ¿Qué es _____ (that)?'", answers: ["esto eso", "esto, eso", "esto y eso"], exp: "Neutral demonstratives: esto (this), eso (that)." },
+    { level: 1, lesson: 14, q: "Complete the sentence (Translate 'I have to leave'):\n'_____ que salir.'", answers: ["tengo"], exp: "'Tengo que salir' = I have to leave." },
 
     // LEVEL 1 - LESSON 15
-    { level: 1, lesson: 15, q: "How do you say 'to have dinner' and 'to have lunch/eat'?", options: ["cenar / comer", "comer / cenar", "tomar / beber", "salir / comer"], answer: 0, exp: "'Cenar' = to have dinner, 'Comer' = to eat/have lunch." },
-    { level: 1, lesson: 15, q: "Translate: 'Are you sure that it's possible?' (male listener)", options: ["¿Estás seguro que es posible?", "¿Estás segura que es posible?", "¿Es posible ahora?", "¿Sabes que es posible?"], answer: 0, exp: "'Seguro' is masculine singular." },
+    { level: 1, lesson: 15, q: "Fill in the blank (Translate 'to have dinner' and 'to have lunch/eat'):\n'Quiero _____ (have dinner) y luego _____ (eat/lunch).'", answers: ["cenar comer", "cenar, comer", "cenar y comer"], exp: "'Cenar' = to have dinner; 'Comer' = to eat / have lunch." },
+    { level: 1, lesson: 15, q: "Complete the sentence (Translate 'Are you sure that it's possible?' - masculine listener):\n¿Estás _____ que es posible?", answers: ["seguro"], exp: "Masculine form: seguro." },
 
     // LEVEL 1 - LESSON 16
-    { level: 1, lesson: 16, q: "How do you say 'I do / I am doing'?", options: ["hago", "haces", "hace", "hacemos"], answer: 0, exp: "'Hago' is the 1st person singular present form of hacer." },
-    { level: 1, lesson: 16, q: "Translate: 'The computer is on the table.'", options: ["El ordenador / la computadora está en la mesa.", "El teléfono está en la silla.", "La computadora está allí.", "El ordenador está cerca de la mesa."], answer: 0, exp: "'En' translates to 'on' or 'in'." },
+    { level: 1, lesson: 16, q: "Complete the sentence (Translate 'I do / I am doing it today'):\n'Lo _____ hoy.'", answers: ["hago"], exp: "1st person present form of hacer is 'hago'." },
+    { level: 1, lesson: 16, q: "Fill in the blank (Translate 'The computer is on the table'):\n'El ordenador / la computadora está _____ la mesa.'", answers: ["en"], exp: "'En' translates to 'on' or 'in'." },
 
     // LEVEL 1 - LESSON 17
-    { level: 1, lesson: 17, q: "How do you say 'he knows' and 'she knows'?", options: ["él sabe / ella sabe", "él conoce / ella conoce", "él sabes / ella sabes", "él sabo / ella sabo"], answer: 0, exp: "3rd person singular present of saber is 'sabe'." },
-    { level: 1, lesson: 17, q: "Translate: 'Where does he have dinner?'", options: ["¿Dónde cena?", "¿Dónde comes?", "¿Cuándo cena?", "¿Dónde quieres cenar?"], answer: 0, exp: "'¿Dónde cena?' refers to 'he/she/usted'." },
+    { level: 1, lesson: 17, q: "Complete the sentence (Translate 'He knows why'):\n'Él _____ por qué.'", answers: ["sabe"], exp: "3rd person singular present of saber is 'sabe'." },
+    { level: 1, lesson: 17, q: "Fill in the blank (Translate 'Where does he have dinner?'):\n'¿Dónde _____?'", answers: ["cena"], exp: "Present conjugation for he/she/usted: cena." },
 
     // LEVEL 1 - LESSON 18
-    { level: 1, lesson: 18, q: "How do you say 'I leave' vs 'you leave'?", options: ["salgo / sales", "sale / salgo", "salgo / sale", "salir / sales"], answer: 0, exp: "'Yo salgo' (I leave), 'Tú sales' (you leave)." },
-    { level: 1, lesson: 18, q: "Translate: 'She needs to do it.'", options: ["Necesita hacerlo.", "Necesitas hacerlo.", "Necesito hacerlo.", "Quiere hacerlo."], answer: 0, exp: "'Necesita hacerlo' = He/She/Usted needs to do it." },
+    { level: 1, lesson: 18, q: "Fill in the blank (Translate 'I leave' and 'you leave'):\n'Yo _____ (leave), tú _____ (leave).'", answers: ["salgo sales", "salgo, sales", "salgo y sales"], exp: "Conjugation of salir: salgo, sales." },
+    { level: 1, lesson: 18, q: "Complete the sentence (Translate 'She needs to do it'):\n'_____ hacerlo.'", answers: ["necesita", "ella necesita"], exp: "'Necesita' translates to she/he needs." },
 
     // LEVEL 1 - LESSON 19
-    { level: 1, lesson: 19, q: "How do you say 'I see' and 'you see'?", options: ["veo / ves", "veo / ve", "ves / veo", "ver / ves"], answer: 0, exp: "'Yo veo' (I see), 'Tú ves' (you see)." },
-    { level: 1, lesson: 19, q: "Translate: 'She can leave when she wants.'", options: ["Puede salir cuando quiere.", "Quieres salir cuando puedes.", "Puedo salir cuando quiero.", "Puede salir hoy."], answer: 0, exp: "'Puede salir cuando quiere' translates the full phrase." },
+    { level: 1, lesson: 19, q: "Fill in the blank (Translate 'I see' and 'you see'):\n'Yo _____ (see), tú _____ (see).'", answers: ["veo ves", "veo, ves", "veo y ves"], exp: "Conjugation of ver: veo, ves." },
 
     // LEVEL 1 - LESSON 20
-    { level: 1, lesson: 20, q: "How do you say 'I am British'?", options: ["Soy británico/a.", "Estoy británico/a.", "Eres británico.", "Es británico."], answer: 0, exp: "Use 'ser' (Soy) for nationality." },
-    { level: 1, lesson: 20, q: "Translate: 'Can you see me?' and 'I can see you.'", options: ["¿Puedes verme? / Puedo verte.", "¿Puedes verte? / Puedo verme.", "¿Me ves? / Te ves.", "¿Puedes ver / Puedo ver?"], answer: 0, exp: "'Me' = me, 'Te' = you (object pronouns attached to infinitives)." },
+    { level: 1, lesson: 20, q: "Complete the sentence (Translate 'I am British' - male/female speaker):\n'_____ británico/a.'", answers: ["soy"], exp: "Use 'Soy' for nationality." },
+    { level: 1, lesson: 20, q: "Fill in the blank (Translate 'Can you see me?' and 'I can see you'):\n'¿Puedes ver_____? Puedo ver_____.'", answers: ["me te", "me, te", "me / te"], exp: "Object pronouns attached to infinitives: verme, verte." },
 
     // LEVEL 2 - LESSON 12
-    { level: 2, lesson: 12, q: "How do you say 'to call' in Spanish?", options: ["llamar", "hablar", "poner", "hacer"], answer: 0, exp: "'Llamar' means to call." },
-    { level: 2, lesson: 12, q: "Translate the command: 'Call me!'", options: ["¡Llámalo!", "¡Llámame!", "¡Llámala!", "¡Háblame!"], answer: 1, exp: "Imperative 'llamar' + 'me' = ¡Llámame!" },
-    { level: 2, lesson: 12, q: "Translate the command: 'Buy it!' (masculine)", options: ["¡Cómprala!", "¡Hazlo!", "¡Cómpralo!", "¡Ponlo!"], answer: 2, exp: "Imperative 'comprar' + 'lo' = ¡Cómpralo!" },
-    { level: 2, lesson: 12, q: "How do you say 'fast / quickly'?", options: ["despacio", "pronto", "rápido", "tarde"], answer: 2, exp: "'Rápido' means fast or quickly." },
+    { level: 2, lesson: 12, q: "Complete the command (Translate 'Call me!'):\n'¡Lláma_____!'", answers: ["me", "llámame"], exp: "Informal imperative of llamar + me = ¡Llámame!" },
+    { level: 2, lesson: 12, q: "Complete the command (Translate 'Buy it!' - masculine object):\n'¡Cómpra_____!'", answers: ["lo", "cómpralo"], exp: "Imperative comprar + lo = ¡Cómpralo!" },
 
     // LEVEL 2 - LESSON 13
-    { level: 2, lesson: 13, q: "How do you say 'well' and 'very well'?", options: ["bueno / muy bueno", "bien / muy bien", "malo / muy malo", "listo / muy listo"], answer: 1, exp: "'Bien' = well, 'muy bien' = very well." },
-    { level: 2, lesson: 13, q: "Translate: 'Monday'", options: ["el martes", "el lunes", "el jueves", "el domingo"], answer: 1, exp: "Monday is 'el lunes'." },
-    { level: 2, lesson: 13, q: "Translate: 'Wednesday'", options: ["el jueves", "el miércoles", "el lunes", "el domingo"], answer: 1, exp: "Wednesday is 'el miércoles'." },
+    { level: 2, lesson: 13, q: "Fill in the blank (Translate 'well' and 'very well'):\n'Habla _____ (well), habla _____ _____ (very well).'", answers: ["bien muy bien", "bien, muy bien"], exp: "'Bien' = well, 'muy bien' = very well." },
+    { level: 2, lesson: 13, q: "Fill in the blank with the Spanish day of the week:\n'Monday = el _____ , Wednesday = el _____.'", answers: ["lunes miercoles", "lunes miércoles", "lunes, miercoles", "lunes, miércoles"], exp: "Monday = lunes, Wednesday = miércoles." },
 
     // LEVEL 2 - LESSON 14
-    { level: 2, lesson: 14, q: "How do you say 'this' (masculine & feminine with nouns)?", options: ["ese / esa", "este / esta", "esto / eso", "aquel / aquella"], answer: 1, exp: "'Este' (m.) and 'esta' (f.) mean 'this'." },
-    { level: 2, lesson: 14, q: "How do you say 'a man' and 'a woman'?", options: ["un chico / una chica", "un hombre / una mujer", "un señor / una señora", "un amigo / una amiga"], answer: 1, exp: "'Un hombre' (a man), 'una mujer' (a woman)." },
+    { level: 2, lesson: 14, q: "Fill in the blank (Translate 'this book' and 'that table'):\n'_____ libro (this), _____ mesa (that).'", answers: ["este esa", "este, esa"], exp: "Demonstrative adjectives: este (m. this), esa (f. that)." },
+    { level: 2, lesson: 14, q: "Complete the sentence (Translate 'a man and a woman'):\n'Un _____ y una _____.'", answers: ["hombre mujer", "hombre, mujer", "hombre y una mujer"], exp: "'Hombre' = man, 'mujer' = woman." },
 
     // LEVEL 2 - LESSON 15
-    { level: 2, lesson: 15, q: "What pronoun is used for 'we' in Spanish?", options: ["nosotros / nosotras", "ellos / ellas", "ustedes", "vosotros"], answer: 0, exp: "'Nosotros' (m./mixed) and 'nosotras' (f.) mean 'we'." },
-    { level: 2, lesson: 15, q: "How do you say 'we speak'?", options: ["hablan", "hablamos", "habláis", "hablo"], answer: 1, exp: "The 'we' ending for -ar verbs is -amos: habl-amos." },
+    { level: 2, lesson: 15, q: "Complete the sentence (Translate 'We speak'):\n'Nosotros _____.'", answers: ["hablamos"], exp: "The -ar verb ending for 'nosotros' is -amos." },
+    { level: 2, lesson: 15, q: "Complete the sentence (Translate 'We go out / leave'):\n'Nosotros _____.'", answers: ["salimos"], exp: "The -ir verb ending for 'nosotros' is -imos: salimos." },
 
     // LEVEL 2 - LESSON 16
-    { level: 2, lesson: 16, q: "How do you say 'too / too much' in Spanish?", options: ["mucho", "demasiado", "muy", "bastante"], answer: 1, exp: "'Demasiado' means too or too much." },
-    { level: 2, lesson: 16, q: "Count 1 to 5 in Spanish:", options: ["seis, siete, ocho, nueve, diez", "uno, dos, tres, cuatro, cinco", "primero, segundo, tercero, cuarto, quinto", "un, dos, tres, catorce, quince"], answer: 1, exp: "1 to 5: uno, dos, tres, cuatro, cinco." },
+    { level: 2, lesson: 16, q: "Complete the sentence (Translate 'It is too expensive / too much'):\n'Es _____ caro.'", answers: ["demasiado"], exp: "'Demasiado' means too or too much." },
+    { level: 2, lesson: 16, q: "Fill in the blank (Count 1 to 3 in Spanish):\n'_____, dos, _____.'", answers: ["uno tres", "uno, tres"], exp: "1 = uno, 3 = tres." },
 
     // LEVEL 2 - LESSON 17
-    { level: 2, lesson: 17, q: "How do you say 'to give' in Spanish?", options: ["dar", "decir", "deber", "dejar"], answer: 0, exp: "'Dar' means to give." },
-    { level: 2, lesson: 17, q: "Translate: 'Give me!'", options: ["¡Dames!", "¡Dame!", "¡Darte!", "¡Dalo!"], answer: 1, exp: "'¡Dame!' is imperative 'give me'." },
+    { level: 2, lesson: 17, q: "Complete the command (Translate 'Give me!'):\n'¡Da_____!'", answers: ["me", "dame"], exp: "Imperative form of dar + me = ¡Dame!" },
+    { level: 2, lesson: 17, q: "Fill in the blank (Translate 'You give me' vs 'I give you'):\n'Me _____ (you give me), te _____ (I give you).'", answers: ["das doy", "das, doy"], exp: "Conjugations of dar: (tú) das, (yo) doy." },
 
     // LEVEL 2 - LESSON 18
-    { level: 2, lesson: 18, q: "What is the formal word for 'you' in Spanish?", options: ["tú", "usted", "ustedes", "vosotros"], answer: 1, exp: "'Usted' is the formal singular 'you'." },
-    { level: 2, lesson: 18, q: "How do you say 'to start / to begin'?", options: ["empezar", "pensar", "poner", "poder"], answer: 0, exp: "'Empezar' means to start." },
+    { level: 2, lesson: 18, q: "Complete the sentence (Translate 'How are you?' formally using usted):\n¿Cómo _____ usted?", answers: ["esta", "está"], exp: "Use 3rd person singular for formal address: está." },
+    { level: 2, lesson: 18, q: "Complete the sentence (Translate 'I start / begin'):\n'Yo _____.'", answers: ["empiezo"], exp: "Stem-changing verb: empezar -> empiezo." },
 
     // LEVEL 2 - LESSON 19
-    { level: 2, lesson: 19, q: "How do you ask 'what kind of...?'", options: ["¿cuántos tipo de...?", "¿qué tipo de...?", "¿cuál tipo de...?", "¿cómo tipo de...?"], answer: 1, exp: "'¿Qué tipo de...?' translates to 'what kind/type of...?'" },
-    { level: 2, lesson: 19, q: "How do you say 'I like' vs 'I would like'?", options: ["me gustaría / me gusta", "me gusta / me gustaría", "quiero / me gustaría", "me gusta / me quiero"], answer: 1, exp: "'Me gusta' = I like; 'Me gustaría' = I would like." },
+    { level: 2, lesson: 19, q: "Complete the question (Translate 'What kind of...'):\n¿_____ tipo de...?", answers: ["que", "qué"], exp: "'¿Qué tipo de...?' = What kind of..." },
+    { level: 2, lesson: 19, q: "Fill in the blank (Translate 'I like' vs 'I would like'):\n'Me _____ (I like), me _____ (I would like).'", answers: ["gusta gustaria", "gusta gustaría", "gusta, gustaria", "gusta, gustaría"], exp: "'Me gusta' = I like; 'Me gustaría' = I would like." },
 
     // LEVEL 2 - LESSON 20
-    { level: 2, lesson: 20, q: "How do you say 'to be able / can'?", options: ["poder", "poner", "pedir", "pensar"], answer: 0, exp: "'Poder' means to be able / can." },
-    { level: 2, lesson: 20, q: "How do you say 'I am getting up' (lifting myself)?", options: ["Lo levanto", "Me levanto", "Te levantas", "Se levanta"], answer: 1, exp: "Reflexive form: 'Me levanto' = I get up." }
+    { level: 2, lesson: 20, q: "Complete the sentence (Translate 'I can / am able'):\n'Yo _____ hacerlo.'", answers: ["puedo"], exp: "Stem-changing verb: poder -> puedo." },
+    { level: 2, lesson: 20, q: "Complete the sentence (Translate 'I am getting up'):\n'_____ levanto.'", answers: ["me"], exp: "Reflexive pronoun for 'yo': me levanto." }
 ];
 
 // STATE MANAGEMENT
@@ -423,7 +431,7 @@ let currentIndex = 0;
 let score = 0;
 let streak = 0;
 
-// WEB AUDIO SYNTHESIZER FOR SFX
+// WEB AUDIO SYNTHESIZER
 let audioCtx = null;
 
 function getAudioContext() {
@@ -460,9 +468,7 @@ function playSound(type) {
             osc.start();
             osc.stop(ctx.currentTime + 0.3);
         }
-    } catch(e) {
-        // Fallback gracefully if Web Audio API is blocked
-    }
+    } catch(e) {}
 }
 
 // INITIALIZATION & FILTERING
@@ -475,9 +481,7 @@ function filterQuestions() {
         currentQuestions = rawQuestions.filter(q => q.level === parseInt(lvl.replace('L','')) && q.lesson === parseInt(lsn));
     }
     
-    // Shuffle questions
     currentQuestions.sort(() => Math.random() - 0.5);
-    
     restartQuiz();
 }
 
@@ -495,43 +499,62 @@ function restartQuiz() {
 function showQuestion() {
     const qData = currentQuestions[currentIndex];
     
-    // UI Update
-    document.getElementById('lesson-tag').textContent = `Level ${qData.level} - Lesson ${qData.lesson}`;
-    document.getElementById('question-text').textContent = qData.q;
+    document.getElementById('lesson-tag').textContent = `Level ${qData.level} - Lesson${qData.lesson}`;
+    document.getElementById('question-text').innerText = qData.q;
     document.getElementById('explanation').style.display = 'none';
     document.getElementById('next-btn').style.display = 'none';
     
-    // Progress Bar Update
+    const inputField = document.getElementById('user-answer');
+    const submitBtn = document.getElementById('submit-btn');
+    inputField.value = '';
+    inputField.disabled = false;
+    inputField.className = 'user-input';
+    submitBtn.disabled = false;
+    submitBtn.style.display = 'block';
+
+    // Focus input field automatically
+    setTimeout(() => inputField.focus(), 100);
+
+    // Keypress handler for enter key
+    inputField.onkeyup = function(e) {
+        if (e.key === 'Enter') checkAnswer();
+    };
+    
     const progressPct = (currentIndex / currentQuestions.length) * 100;
     document.getElementById('progress-bar').style.width = `${progressPct}%`;
-
-    // Render Options
-    const optionsContainer = document.getElementById('options-container');
-    optionsContainer.innerHTML = '';
-    
-    qData.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.innerHTML = `<span>${opt}</span>`;
-        btn.onclick = () => selectOption(idx);
-        optionsContainer.appendChild(btn);
-    });
 }
 
-function selectOption(index) {
-    const qData = currentQuestions[currentIndex];
-    const options = document.querySelectorAll('.option-btn');
-    
-    options.forEach(btn => btn.disabled = true);
+// STRING NORMALIZATION UTILITY (Ignores punctuation, accents, and case for friendly matching)
+function normalizeString(str) {
+    return str
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
+        .replace(/[¿?¡!.,\/#$%\^&\*;:{}=\-_`~()]/g, "") // remove punctuation
+        .replace(/\s+/g, " ") // simplify whitespace
+        .trim();
+}
 
-    if (index === qData.answer) {
-        options[index].classList.add('correct');
+function checkAnswer() {
+    const qData = currentQuestions[currentIndex];
+    const inputField = document.getElementById('user-answer');
+    const submitBtn = document.getElementById('submit-btn');
+    const userVal = normalizeString(inputField.value);
+    
+    if (!userVal) return; // Ignore blank submissions
+
+    inputField.disabled = true;
+    submitBtn.style.display = 'none';
+
+    // Check if normalized user input matches any acceptable normalized answer
+    const isCorrect = qData.answers.some(ans => normalizeString(ans) === userVal);
+
+    if (isCorrect) {
+        inputField.classList.add('correct');
         score++;
         streak++;
         playSound('correct');
     } else {
-        options[index].classList.add('incorrect');
-        options[qData.answer].classList.add('correct');
+        inputField.classList.add('incorrect');
         streak = 0;
         playSound('error');
     }
@@ -540,7 +563,7 @@ function selectOption(index) {
     document.getElementById('streak-count').textContent = streak;
 
     const expBox = document.getElementById('explanation');
-    expBox.textContent = `💡 ${qData.exp}`;
+    expBox.innerHTML = `<strong>Accepted Answer:</strong> ${qData.answers[0]}<br>💡 ${qData.exp}`;
     expBox.style.display = 'block';
 
     document.getElementById('next-btn').style.display = 'block';
@@ -565,10 +588,10 @@ function showResults() {
     document.getElementById('final-score').textContent = `${finalPct}%`;
     
     let feedback = "";
-    if (finalPct === 100) feedback = "¡Excelente! You have mastered all selected material! 🌟";
-    else if (finalPct >= 80) feedback = "¡Muy bien! Great vocabulary retention! 👏";
-    else if (finalPct >= 60) feedback = "Good attempt! Review the lessons and try again. 👍";
-    else feedback = "Keep practicing! Consistency is key. 📚";
+    if (finalPct === 100) feedback = "¡Increíble! Perfect score on advanced recall! 🌟";
+    else if (finalPct >= 80) feedback = "¡Excelente! Superior active grammar memory! 👏";
+    else if (finalPct >= 60) feedback = "Good effort! Practice spelling and conjugations again. 👍";
+    else feedback = "Keep practicing! Active recall builds true fluency. 📚";
     
     document.getElementById('results-feedback').textContent = feedback;
     resultsScreen.style.display = 'block';
@@ -612,7 +635,7 @@ function triggerConfetti() {
     animate();
 }
 
-// Start Quiz on initial page load
+// Start Quiz on load
 filterQuestions();
 </script>
 </body>
