@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spanish Level 1 & 2 Full Sentence Translation Challenge</title>
+
+    <!-- PWA Manifest & Mobile App Styling -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4A90E2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Español">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/197/197593.png">
+
+    <!-- Register Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
+
     <style>
         :root {
             --primary: #4A90E2;
@@ -354,15 +372,13 @@
 </div>
 
 <script>
-// FULL SENTENCE TRANSLATION QUESTION BANK (LEVEL 1 & LEVEL 2)
-// Array of valid answers accepts optional pronouns (yo, tú, él, ella), vocabulary variations (ordenador vs computadora, coche vs carro), and word order permutations.
 const rawQuestions = [
-    // LEVEL 1 - LESSON 11[span_0](start_span)[span_0](end_span)
+    // LEVEL 1 - LESSON 11
     {
         level: 1, lesson: 11,
         prompt: "Translate into Spanish: \"Do you know why I don't have it?\"",
         answers: ["¿Sabes por qué no lo tengo?", "Sabes por que no lo tengo?", "Sabes por que no lo tengo", "Sabes porque no lo tengo"],
-        exp: "Lesson 11 pattern: '¿Sabes por qué no lo tengo?[span_1](start_span)'[span_1](end_span) (Subject pronoun 'tú' is optional)."
+        exp: "Lesson 11 pattern: '¿Sabes por qué no lo tengo?' (Subject pronoun 'tú' is optional)."
     },
     {
         level: 1, lesson: 11,
@@ -375,15 +391,15 @@ const rawQuestions = [
             "Yo no sé dónde está tu teléfono, pero sé dónde está tu computadora.",
             "Yo no sé dónde está tu teléfono, pero sé dónde está tu ordenador."
         ],
-        exp: "Lesson 11 standard transcript phrasing[span_2](start_span)[span_2](end_span) accepts both 'ordenador' (ES) and 'computadora' (AmL)."
+        exp: "Lesson 11 standard transcript phrasing accepts both 'ordenador' (ES) and 'computadora' (AmL)."
     },
 
-    // LEVEL 1 - LESSON 12[span_3](start_span)[span_3](end_span)
+    // LEVEL 1 - LESSON 12
     {
         level: 1, lesson: 12,
         prompt: "Translate into Spanish: \"Can I know where you are now?\"",
         answers: ["¿Puedo saber dónde estás ahora?", "Puedo saber donde estas ahora?", "Puedo saber donde estas ahora"],
-        exp: "'Puedo saber dónde estás ahora?' combines 'puedo saber' + 'dónde estás' + 'ahora[span_4](start_span)'[span_4](end_span)."
+        exp: "'Puedo saber dónde estás ahora?' combines 'puedo saber' + 'dónde estás' + 'ahora'."
     },
     {
         level: 1, lesson: 12,
@@ -396,15 +412,15 @@ const rawQuestions = [
             "Sabes donde esta el ordenador grande",
             "Sabes donde esta la computadora grande"
         ],
-        exp: "Lesson 12 translation: '¿Sabes dónde está el ordenador / la computadora grande?[span_5](start_span)'[span_5](end_span)"
+        exp: "Lesson 12 translation: '¿Sabes dónde está el ordenador / la computadora grande?'"
     },
 
-    // LEVEL 1 - LESSON 13[span_6](start_span)[span_6](end_span)
+    // LEVEL 1 - LESSON 13
     {
         level: 1, lesson: 13,
         prompt: "Translate into Spanish: \"I'm sorry but I'm very busy now.\" (Male speaker)",
         answers: ["Lo siento pero estoy muy ocupado ahora.", "Lo siento, pero estoy muy ocupado ahora.", "Lo siento pero estoy muy ocupado ahora"],
-        exp: "Male speaker uses masculine ending: 'ocupado[span_7](start_span)'[span_7](end_span)."
+        exp: "Male speaker uses masculine ending: 'ocupado'."
     },
     {
         level: 1, lesson: 13,
@@ -414,15 +430,15 @@ const rawQuestions = [
             "No quiero hacerlo asi porque es muy dificil",
             "Yo no quiero hacerlo así porque es muy difícil."
         ],
-        exp: "Lesson 13 phrasing: 'No quiero hacerlo así porque es muy difícil.[span_8](start_span)'[span_8](end_span)"
+        exp: "Lesson 13 phrasing: 'No quiero hacerlo así porque es muy difícil.'"
     },
 
-    // LEVEL 1 - LESSON 14[span_9](start_span)[span_9](end_span)
+    // LEVEL 1 - LESSON 14
     {
         level: 1, lesson: 14,
         prompt: "Translate into Spanish: \"Do you want to leave tonight or tomorrow?\"",
         answers: ["¿Quieres salir esta noche o mañana?", "Quieres salir esta noche o mañana?", "Quieres salir esta noche o mañana"],
-        exp: "'Esta noche' = tonight, 'mañana' = tomorrow[span_10](start_span)[span_10](end_span)."
+        exp: "'Esta noche' = tonight, 'mañana' = tomorrow."
     },
     {
         level: 1, lesson: 14,
@@ -434,10 +450,10 @@ const rawQuestions = [
             "Quiero hacerlo esta noche porque estoy ocupado ahora",
             "Quiero hacerlo esta noche porque estoy ocupada ahora"
         ],
-        exp: "Lesson 14 sentence: 'Quiero hacerlo esta noche porque estoy ocupado/a ahora.[span_11](start_span)'[span_11](end_span)"
+        exp: "Lesson 14 sentence: 'Quiero hacerlo esta noche porque estoy ocupado/a ahora.'"
     },
 
-    // LEVEL 1 - LESSON 15[span_12](start_span)[span_12](end_span)
+    // LEVEL 1 - LESSON 15
     {
         level: 1, lesson: 15,
         prompt: "Translate into Spanish: \"I can't have dinner because I am very busy.\"",
@@ -448,7 +464,7 @@ const rawQuestions = [
             "No puedo cenar porque estoy muy ocupado",
             "No puedo cenar porque estoy muy ocupada"
         ],
-        exp: "'Cenar' = to have dinner[span_13](start_span)[span_13](end_span). Busy = ocupado / ocupada."
+        exp: "'Cenar' = to have dinner. Busy = ocupado / ocupada."
     },
     {
         level: 1, lesson: 15,
@@ -461,10 +477,10 @@ const rawQuestions = [
             "Estoy seguro que la casa no esta alli",
             "Estoy segura que la casa no esta alli"
         ],
-        exp: "Lesson 15 translation: 'Estoy seguro que la casa no está allí.[span_14](start_span)'[span_14](end_span)"
+        exp: "Lesson 15 translation: 'Estoy seguro que la casa no está allí.'"
     },
 
-    // LEVEL 1 - LESSON 16[span_15](start_span)[span_15](end_span)
+    // LEVEL 1 - LESSON 16
     {
         level: 1, lesson: 16,
         prompt: "Translate into Spanish: \"I'm not doing it because I'm tired.\"",
@@ -475,35 +491,35 @@ const rawQuestions = [
             "No lo hago porque estoy cansado",
             "No lo hago porque estoy cansada"
         ],
-        exp: "Lesson 16 pattern: 'No lo hago porque estoy cansado/a.[span_16](start_span)'[span_16](end_span)"
+        exp: "Lesson 16 pattern: 'No lo hago porque estoy cansado/a.'"
     },
     {
         level: 1, lesson: 16,
         prompt: "Translate into Spanish: \"Do you know where my chair is?\"",
         answers: ["¿Sabes dónde está mi silla?", "Sabes donde esta mi silla?", "Sabes donde esta mi silla"],
-        exp: "'Silla' = chair[span_17](start_span)[span_17](end_span); '¿Sabes dónde está...?' = Do you know where... is?"
+        exp: "'Silla' = chair; '¿Sabes dónde está...?' = Do you know where... is?"
     },
 
-    // LEVEL 1 - LESSON 17[span_18](start_span)[span_18](end_span)
+    // LEVEL 1 - LESSON 17
     {
         level: 1, lesson: 17,
         prompt: "Translate into Spanish: \"Do you know that I am doing it today?\"",
         answers: ["¿Sabes que lo hago hoy?", "Sabes que lo hago hoy?", "Sabes que lo hago hoy"],
-        exp: "Lesson 17 translation: '¿Sabes que lo hago hoy?[span_19](start_span)'[span_19](end_span)"
+        exp: "Lesson 17 translation: '¿Sabes que lo hago hoy?'"
     },
     {
         level: 1, lesson: 17,
         prompt: "Translate into Spanish: \"Carlos is in the house.\"",
         answers: ["Carlos está en la casa.", "Carlos esta en la casa", "Carlos esta en la casa."],
-        exp: "'Carlos está en la casa.' uses 'estar' for location[span_20](start_span)[span_20](end_span)."
+        exp: "'Carlos está en la casa.' uses 'estar' for location."
     },
 
-    // LEVEL 1 - LESSON 18[span_21](start_span)[span_21](end_span)
+    // LEVEL 1 - LESSON 18
     {
         level: 1, lesson: 18,
         prompt: "Translate into Spanish: \"Why are you leaving now?\"",
         answers: ["¿Por qué sales ahora?", "Por que sales ahora?", "Por que sales ahora"],
-        exp: "Present tense of salir for 'tú': 'sales[span_22](start_span)'[span_22](end_span)."
+        exp: "Present tense of salir for 'tú': 'sales'."
     },
     {
         level: 1, lesson: 18,
@@ -518,10 +534,10 @@ const rawQuestions = [
             "No tiene un ordenador",
             "No tiene una computadora"
         ],
-        exp: "Lesson 18: 'No tiene un ordenador / una computadora.[span_23](start_span)'[span_23](end_span)"
+        exp: "Lesson 18: 'No tiene un ordenador / una computadora.'"
     },
 
-    // LEVEL 1 - LESSON 19[span_24](start_span)[span_24](end_span)
+    // LEVEL 1 - LESSON 19
     {
         level: 1, lesson: 19,
         prompt: "Translate into Spanish: \"She sees that it's impossible for me.\"",
@@ -532,7 +548,7 @@ const rawQuestions = [
             "Ve que es imposible para mi.",
             "Ve que es imposible para mi"
         ],
-        exp: "Lesson 19: '(Ella) ve que es imposible para mi.[span_25](start_span)'[span_25](end_span)"
+        exp: "Lesson 19: '(Ella) ve que es imposible para mi.'"
     },
     {
         level: 1, lesson: 19,
@@ -543,15 +559,15 @@ const rawQuestions = [
             "Puede salir cuando ella quiere.",
             "Puede salir cuando quiere"
         ],
-        exp: "Lesson 19: 'Puede salir cuando quiere.[span_26](start_span)'[span_26](end_span)"
+        exp: "Lesson 19: 'Puede salir cuando quiere.'"
     },
 
-    // LEVEL 1 - LESSON 20[span_27](start_span)[span_27](end_span)
+    // LEVEL 1 - LESSON 20
     {
         level: 1, lesson: 20,
         prompt: "Translate into Spanish: \"Why can't you tell me now?\"",
         answers: ["¿Por qué no puedes decirme ahora?", "Por que no puedes decirme ahora?", "Por que no puedes decirme ahora"],
-        exp: "Lesson 20: '¿Por qué no puedes decirme ahora?[span_28](start_span)'[span_28](end_span)"
+        exp: "Lesson 20: '¿Por qué no puedes decirme ahora?'"
     },
     {
         level: 1, lesson: 20,
@@ -562,7 +578,7 @@ const rawQuestions = [
             "Ella quiere decirme",
             "Quiere decirme"
         ],
-        exp: "Lesson 20: '(Ella) quiere decirme.[span_29](start_span)'[span_29](end_span)"
+        exp: "Lesson 20: '(Ella) quiere decirme.'"
     },
 
     // LEVEL 2 - LESSON 12
@@ -768,7 +784,7 @@ function restartQuiz() {
 function showQuestion() {
     const qData = currentQuestions[currentIndex];
     
-    document.getElementById('lesson-tag').textContent = `Level ${qData.level} - Lesson ${qData.lesson}`;
+    document.getElementById('lesson-tag').textContent = `Level ${qData.level} - Lesson${qData.lesson}`;
     document.getElementById('question-text').innerText = qData.prompt;
     document.getElementById('explanation').style.display = 'none';
     document.getElementById('next-btn').style.display = 'none';
@@ -783,7 +799,6 @@ function showQuestion() {
 
     setTimeout(() => inputField.focus(), 100);
 
-    // Enter key submits sentence (Shift+Enter allows multiline if desired)
     inputField.onkeydown = function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -795,13 +810,12 @@ function showQuestion() {
     document.getElementById('progress-bar').style.width = `${progressPct}%`;
 }
 
-// STRING NORMALIZATION UTILITY FOR ACCENT/PUNCTUATION FLEXIBILITY
 function normalizeString(str) {
     return str
         .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // removes accents
-        .replace(/[¿?¡!.,\/#$%\^&\*;:{}=\-_`~()]/g, "") // removes punctuation
-        .replace(/\s+/g, " ") // normalizes spaces
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[¿?¡!.,\/#$%\^&\*;:{}=\-_`~()]/g, "")
+        .replace(/\s+/g, " ")
         .trim();
 }
 
@@ -816,7 +830,6 @@ function checkAnswer() {
     inputField.disabled = true;
     submitBtn.style.display = 'none';
 
-    // Flexible string match against any accepted variations
     const isCorrect = qData.answers.some(ans => normalizeString(ans) === userVal);
 
     if (isCorrect) {
@@ -835,7 +848,6 @@ function checkAnswer() {
 
     const expBox = document.getElementById('explanation');
     
-    // Primary target answer display
     let acceptedHtml = `<ul class="accepted-list">`;
     const primaryAns = qData.answers[0];
     acceptedHtml += `<li><strong>Target Translation:</strong> ${primaryAns}</li>`;
@@ -913,7 +925,6 @@ function triggerConfetti() {
     animate();
 }
 
-// Start Quiz on load
 filterQuestions();
 </script>
 </body>
